@@ -18,11 +18,11 @@ public class App
 {
     public static void main( String[] args ) throws Exception
     {
-        String[] controllers = {"IndexController", "PageController"};
+        String[] controllers = {"Index", "SubPage"};
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
         for (String controller : controllers) {
-            Class obj = Class.forName("webserver." + controller);
+            Class obj = Class.forName("controller." + controller);
 
             Constructor constructor = obj.getConstructor();
             Method[] methods = obj.getMethods();
@@ -34,7 +34,7 @@ public class App
                 }
                 if (annotation instanceof WebRoute) {
                     WebRoute webRoute = (WebRoute) annotation;
-                    server.createContext(webRoute.path(), (HttpHandler) constructor.newInstance());
+                    server.createContext(webRoute.value(), (HttpHandler) constructor.newInstance());
                 }
             }
         }
